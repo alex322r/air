@@ -345,6 +345,36 @@
         right: 10%;
       }
     }
+
+    /* Ajuste perfecto para el perrito asomado */
+.mascot-holder {
+  position: absolute;
+  top: -125px; /* Lo subimos para que sus patitas queden justo encima de la carta */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 170px; /* Tamaño optimizado en pantalla */
+  z-index: 10;
+  pointer-events: none;
+}
+
+.mascot-holder img {
+  width: 100%;
+  display: block;
+  /* Elimina el blanco del fondo de la imagen, fusionándola con la carta y el fondo */
+  mix-blend-mode: multiply;
+}
+
+/* Espacio interno y externo de la carta */
+.letter-card {
+  background: var(--card-bg);
+  width: 100%;
+  padding: 68px 36px 40px; /* Padding superior para evitar que las letras choquen con sus patitas */
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(214, 104, 116, 0.12);
+  margin-top: 110px; /* Espacio para que el perrito sea completamente visible arriba */
+  position: relative;
+}
   </style>
 </head>
 <body>
