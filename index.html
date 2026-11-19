@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Para ti</title>
+  <title>Para Nataly</title>
   <!-- Tipografías minimalistas y elegantes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,15 +11,17 @@
   
   <style>
     :root {
-      --bg-color: #FAF8F5;
-      --envelope-base: #EFECE6;
-      --envelope-flap: #E5E0D8;
-      --envelope-front: #F5F2EC;
-      --card-bg: #FFFFFF;
-      --text-primary: #262523;
-      --text-secondary: #6E6A63;
-      --accent: #B87D6B; /* Terracota suave */
-      --shadow: 0 20px 40px rgba(38, 37, 35, 0.08);
+      --bg-color: #FDF7F8;          /* Rosa nieve muy suave */
+      --envelope-base: #F6E4E7;     /* Rosa pastel medio */
+      --envelope-flap: #EED4D9;     /* Rosa empolvado para la solapa */
+      --envelope-front: #F9ECEE;    /* Rosa claro frontal */
+      --envelope-bottom: #F2DCE0;   /* Pliegue inferior del sobre */
+      --card-bg: #FFFFFF;           /* Blanco puro para legibilidad */
+      --text-primary: #3A2529;      /* Borgoña muy oscuro (más cálido que el negro) */
+      --text-secondary: #8C6D73;    /* Malva grisáceo suave */
+      --accent: #D66874;            /* Rojo pastel / Coral rosado */
+      --accent-hover: #C25360;      /* Rojo pastel un poco más intenso */
+      --shadow: 0 20px 40px rgba(180, 95, 110, 0.10);
     }
 
     * {
@@ -93,7 +95,7 @@
       height: 0;
       border-left: 160px solid var(--envelope-front);
       border-right: 160px solid var(--envelope-front);
-      border-bottom: 110px solid #EBE6DD;
+      border-bottom: 110px solid var(--envelope-bottom);
       border-top: 100px solid transparent;
       border-radius: 0 0 8px 8px;
       z-index: 3;
@@ -106,22 +108,24 @@
       left: 50%;
       transform: translate(-50%, -50%);
       background: var(--card-bg);
-      color: var(--text-primary);
+      color: var(--accent);
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
+      font-weight: 500;
       padding: 8px 14px;
       border-radius: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 14px rgba(214, 104, 116, 0.16);
       z-index: 5;
       letter-spacing: 0.5px;
-      border: 1px solid rgba(0,0,0,0.05);
+      border: 1px solid rgba(214, 104, 116, 0.18);
       transition: all 0.3s ease;
       white-space: nowrap;
     }
 
     .envelope-wrapper:hover .seal {
-      background: var(--text-primary);
+      background: var(--accent);
       color: var(--card-bg);
+      border-color: var(--accent);
     }
 
     /* --- ESTADOS DE APERTURA --- */
@@ -155,7 +159,7 @@
       transform: translateY(30px);
       pointer-events: none;
       transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-      border: 1px solid rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(214, 104, 116, 0.12);
     }
 
     .letter-card.visible {
@@ -174,7 +178,8 @@
       background: #FFFFFF;
       padding: 5px 5px 14px 5px;
       border-radius: 6px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 25px rgba(180, 95, 110, 0.15);
+      border: 1px solid rgba(214, 104, 116, 0.12);
       transform: rotate(6deg);
       cursor: pointer;
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -209,7 +214,7 @@
       transition: all 0.25s ease;
       pointer-events: none;
       white-space: nowrap;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      box-shadow: 0 4px 12px rgba(58, 37, 41, 0.15);
     }
 
     .pet-tooltip::after {
@@ -241,7 +246,7 @@
     .status-dot {
       width: 6px;
       height: 6px;
-      background-color: #6B9E78;
+      background-color: var(--accent);
       border-radius: 50%;
       display: inline-block;
     }
@@ -258,7 +263,7 @@
     .letter-body p {
       font-size: 15px;
       line-height: 1.75;
-      color: #3D3B38;
+      color: #4D3539;
       margin-bottom: 18px;
       font-weight: 300;
     }
@@ -266,7 +271,7 @@
     .signature {
       margin-top: 32px;
       padding-top: 20px;
-      border-top: 1px solid #F0EDE8;
+      border-top: 1px solid #F7E8EB;
     }
 
     .signature-name {
@@ -291,9 +296,9 @@
     }
 
     .btn-reply {
-      background: transparent;
-      border: 1px solid #DCD7CE;
-      color: var(--text-primary);
+      background: #FDF4F5;
+      border: 1px solid #EBC4CB;
+      color: var(--accent-hover);
       font-family: 'JetBrains Mono', monospace;
       font-size: 11.5px;
       padding: 10px 16px;
@@ -303,16 +308,16 @@
     }
 
     .btn-reply:hover {
-      background: var(--text-primary);
+      background: var(--accent);
       color: #FFFFFF;
-      border-color: var(--text-primary);
+      border-color: var(--accent);
     }
 
     .hint {
       margin-top: 18px;
       font-size: 12px;
       color: var(--text-secondary);
-      opacity: 0.7;
+      opacity: 0.75;
       transition: opacity 0.4s ease;
     }
 
@@ -338,14 +343,14 @@
     <div class="envelope-wrapper" id="envelope" onclick="openLetter()">
       <div class="flap"></div>
       <div class="pocket"></div>
-      <div class="seal">&lt;abrir-carta /&gt;</div>
+      <div class="seal"> abrir </div>
     </div>
     <p class="hint" id="hint">Toca el sobre para desplegar</p>
 
     <!-- CARTA DESPLEGADA -->
     <article class="letter-card" id="letter">
       <!-- Tooltip secreto de la mascota -->
-      <div class="pet-tooltip" id="petTooltip">Aprobado por [Nombre de la mascota] ✓</div>
+      <div class="pet-tooltip" id="petTooltip">Aprobado por [Nombre de la mascota] ♥</div>
       
       <!-- Foto de la mascota (Reemplaza el src con la ruta de su foto) -->
       <div class="pet-badge" onclick="togglePetNote()" title="Tócame">
@@ -390,7 +395,7 @@
     // Easter egg en la consola para cuando abra las DevTools (F12)
     console.log(
       "%c♥ Hola ingeniera. Si estás leyendo esto, ya te ganaste un café extra.",
-      "color: #B87D6B; font-family: monospace; font-size: 13px; padding: 8px 0;"
+      "color: #D66874; font-family: monospace; font-size: 13px; padding: 8px 0;"
     );
 
     function openLetter() {
@@ -423,9 +428,9 @@
 
     function acceptInvite() {
       const btn = document.getElementById('replyBtn');
-      btn.textContent = "✓ Merged! Nos vemos pronto";
-      btn.style.background = "#6B9E78";
-      btn.style.borderColor = "#6B9E78";
+      btn.textContent = "♥ Merged! Nos vemos pronto";
+      btn.style.background = "#D66874";
+      btn.style.borderColor = "#D66874";
       btn.style.color = "#FFFFFF";
       
       // Muestra también el mensaje de la mascota
