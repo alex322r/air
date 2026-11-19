@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para ti</title>
+  <!-- Tipografías minimalistas y elegantes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-color: #FAF8F5;
+      --envelope-base: #EFECE6;
+      --envelope-flap: #E5E0D8;
+      --envelope-front: #F5F2EC;
+      --card-bg: #FFFFFF;
+      --text-primary: #262523;
+      --text-secondary: #6E6A63;
+      --accent: #B87D6B; /* Terracota suave */
+      --shadow: 0 20px 40px rgba(38, 37, 35, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+
+    /* --- CONTENEDOR DEL SOBRE --- */
+    .stage {
+      position: relative;
+      width: 100%;
+      max-width: 460px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      width: 320px;
+      height: 210px;
+      background: var(--envelope-base);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform 0.4s ease, opacity 0.6s ease;
+    }
+
+    .envelope-wrapper:hover {
+      transform: translateY(-4px);
+    }
+
+    /* Solapa superior del sobre */
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 160px solid transparent;
+      border-right: 160px solid transparent;
+      border-top: 115px solid var(--envelope-flap);
+      transform-origin: top;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 4;
+      border-radius: 8px 8px 0 0;
+    }
+
+    /* Bolsillo frontal del sobre */
+    .pocket {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 160px solid var(--envelope-front);
+      border-right: 160px solid var(--envelope-front);
+      border-bottom: 110px solid #EBE6DD;
+      border-top: 100px solid transparent;
+      border-radius: 0 0 8px 8px;
+      z-index: 3;
+    }
+
+    /* Sello minimalista tipo código */
+    .seal {
+      position: absolute;
+      top: 98px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--card-bg);
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 8px 14px;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      z-index: 5;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .envelope-wrapper:hover .seal {
+      background: var(--text-primary);
+      color: var(--card-bg);
+    }
+
+    /* --- ESTADOS DE APERTURA --- */
+    .envelope-wrapper.open .flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .envelope-wrapper.open .seal {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .envelope-wrapper.fade-out {
+      opacity: 0;
+      transform: translateY(40px) scale(0.95);
+      pointer-events: none;
+      position: absolute;
+    }
+
+    /* --- HOJA DE LA CARTA --- */
+    .letter-card {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 480px;
+      padding: 48px 36px 40px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      position: relative;
+      opacity: 0;
+      transform: translateY(30px);
+      pointer-events: none;
+      transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+      border: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    .letter-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    /* Foto de la mascota estilo Polaroid / Sticker en esquina */
+    .pet-badge {
+      position: absolute;
+      top: -24px;
+      right: 28px;
+      width: 82px;
+      height: 82px;
+      background: #FFFFFF;
+      padding: 5px 5px 14px 5px;
+      border-radius: 6px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      transform: rotate(6deg);
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 10;
+    }
+
+    .pet-badge:hover {
+      transform: rotate(0deg) scale(1.08);
+    }
+
+    .pet-badge img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 3px;
+      display: block;
+    }
+
+    /* Tooltip interactivo al tocar a la mascota */
+    .pet-tooltip {
+      position: absolute;
+      top: -62px;
+      right: 16px;
+      background: var(--text-primary);
+      color: #FFFFFF;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: all 0.25s ease;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .pet-tooltip::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      right: 36px;
+      border-width: 5px 5px 0;
+      border-style: solid;
+      border-color: var(--text-primary) transparent transparent;
+    }
+
+    .pet-tooltip.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Contenido textual de la carta */
+    .meta-header {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      background-color: #6B9E78;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      color: var(--text-primary);
+    }
+
+    .letter-body p {
+      font-size: 15px;
+      line-height: 1.75;
+      color: #3D3B38;
+      margin-bottom: 18px;
+      font-weight: 300;
+    }
+
+    .signature {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid #F0EDE8;
+    }
+
+    .signature-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 22px;
+      color: var(--text-primary);
+    }
+
+    .postscript {
+      margin-top: 10px;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Botón de acción final sutil */
+    .action-area {
+      margin-top: 28px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn-reply {
+      background: transparent;
+      border: 1px solid #DCD7CE;
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-reply:hover {
+      background: var(--text-primary);
+      color: #FFFFFF;
+      border-color: var(--text-primary);
+    }
+
+    .hint {
+      margin-top: 18px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      opacity: 0.7;
+      transition: opacity 0.4s ease;
+    }
+
+    @media (max-width: 480px) {
+      .letter-card {
+        padding: 44px 24px 32px;
+      }
+      h1 {
+        font-size: 28px;
+      }
+      .pet-badge {
+        width: 72px;
+        height: 72px;
+        right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stage">
+    <!-- SOBRE INICIAL -->
+    <div class="envelope-wrapper" id="envelope" onclick="openLetter()">
+      <div class="flap"></div>
+      <div class="pocket"></div>
+      <div class="seal">&lt;abrir-carta /&gt;</div>
+    </div>
+    <p class="hint" id="hint">Toca el sobre para desplegar</p>
+
+    <!-- CARTA DESPLEGADA -->
+    <article class="letter-card" id="letter">
+      <!-- Tooltip secreto de la mascota -->
+      <div class="pet-tooltip" id="petTooltip">Aprobado por [Nombre de la mascota] ✓</div>
+      
+      <!-- Foto de la mascota (Reemplaza el src con la ruta de su foto) -->
+      <div class="pet-badge" onclick="togglePetNote()" title="Tócame">
+        <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=300&q=80" alt="Mascota">
+      </div>
+
+      <div class="meta-header">
+        <span class="status-dot"></span>
+        <span>v1.0.0 — Solo para tus ojos</span>
+      </div>
+
+      <h1>Hola, [Su Nombre]</h1>
+
+      <div class="letter-body">
+        <p>
+          Quería escribirte algo distinto, un pequeño espacio en internet que existiera únicamente para ti, sin ruido ni distracciones.
+        </p>
+        <p>
+          Admiro muchísimo la forma en la que ves el mundo, tu mente brillante para resolver problemas y esa calidez tuya que hace que cualquier día normal se sienta especial. Desde que coincidimos, todo parece funcionar con mucha más armonía.
+        </p>
+        <p>
+          No hace falta complicar las cosas: simplemente me encanta pasar tiempo contigo, escucharte y seguir descubriendo todo lo que podemos construir juntos.
+        </p>
+      </div>
+
+      <div class="signature">
+        <div class="signature-name">Con cariño, [Tu Nombre]</div>
+        <p class="postscript">
+          Pd: [Nombre de la mascota] me autorizó enviarte esto (y dice que deberíamos salir pronto).
+        </p>
+      </div>
+
+      <div class="action-area">
+        <button class="btn-reply" id="replyBtn" onclick="acceptInvite()">
+          git commit -m "Acepto la salida"
+        </button>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    // Easter egg en la consola para cuando abra las DevTools (F12)
+    console.log(
+      "%c♥ Hola ingeniera. Si estás leyendo esto, ya te ganaste un café extra.",
+      "color: #B87D6B; font-family: monospace; font-size: 13px; padding: 8px 0;"
+    );
+
+    function openLetter() {
+      const envelope = document.getElementById('envelope');
+      const hint = document.getElementById('hint');
+      const letter = document.getElementById('letter');
+
+      // 1. Abre la solapa
+      envelope.classList.add('open');
+      hint.style.opacity = '0';
+
+      // 2. Desvanece el sobre y muestra la hoja
+      setTimeout(() => {
+        envelope.classList.add('fade-out');
+        hint.style.display = 'none';
+        letter.classList.add('visible');
+      }, 550);
+    }
+
+    let tooltipTimeout;
+    function togglePetNote() {
+      const tooltip = document.getElementById('petTooltip');
+      tooltip.classList.add('show');
+      
+      clearTimeout(tooltipTimeout);
+      tooltipTimeout = setTimeout(() => {
+        tooltip.classList.remove('show');
+      }, 3000);
+    }
+
+    function acceptInvite() {
+      const btn = document.getElementById('replyBtn');
+      btn.textContent = "✓ Merged! Nos vemos pronto";
+      btn.style.background = "#6B9E78";
+      btn.style.borderColor = "#6B9E78";
+      btn.style.color = "#FFFFFF";
+      
+      // Muestra también el mensaje de la mascota
+      togglePetNote();
+    }
+  </script>
+</body>
+</html>
