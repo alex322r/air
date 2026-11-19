@@ -7,19 +7,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-  
+
   <style>
     :root {
-      --bg-color: #FDF7F8;          /* Rosa nieve muy suave */
-      --envelope-base: #F6E4E7;     /* Rosa pastel medio */
-      --envelope-flap: #EED4D9;     /* Rosa empolvado para la solapa */
-      --envelope-front: #F9ECEE;    /* Rosa claro frontal */
-      --envelope-bottom: #F2DCE0;   /* Pliegue inferior del sobre */
-      --card-bg: #FFFFFF;           /* Blanco puro */
-      --text-primary: #3A2529;      /* Borgoña muy oscuro */
-      --text-secondary: #8C6D73;    /* Malva grisáceo suave */
-      --accent: #D66874;            /* Rojo pastel / Coral rosado */
-      --accent-hover: #C25360;      /* Rojo pastel más intenso */
+      --bg-color: #FDF7F8;
+      --envelope-base: #F6E4E7;
+      --envelope-flap: #EED4D9;
+      --envelope-front: #F9ECEE;
+      --envelope-bottom: #F2DCE0;
+      --card-bg: #FFFFFF;
+      --text-primary: #3A2529;
+      --text-secondary: #8C6D73;
+      --accent: #D66874;
+      --accent-hover: #C25360;
       --shadow: 0 20px 40px rgba(180, 95, 110, 0.10);
     }
 
@@ -49,7 +49,7 @@
     .stage {
       position: relative;
       width: 100%;
-      max-width: 520px; /* Aumentamos ligeramente para lucir más en escritorio */
+      max-width: 520px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -162,8 +162,11 @@
       opacity: 0.75;
     }
 
-    /* --- CONTENEDOR DE LA CARTA Y LA MASCOTA --- */
+    /* --- ESCENARIO DE LA CARTA Y LA MASCOTA --- */
     .letter-stage {
+      --mascot-w: 200px;  /* tamaño de la mascota */
+      --overlap: 34px;    /* cuánto "entran" las patitas sobre la carta */
+
       display: none;
       width: 100%;
       position: relative;
@@ -181,51 +184,45 @@
       transform: translateY(0);
     }
 
-    /* Ilustración de la Mascota - OPTIMIZADA PARA ESCRITORIO */
-    .mascot-holder {
-      position: absolute;
-      top: -160px; /* Sube la imagen de forma que las patitas toquen la carta en escritorios */
-      left: 50%;
-      transform: translateX(-50%);
-      width: 215px; /* Gran presencia en pantallas normales/escritorio */
+    /* Mascota en el flujo normal, superpuesta al borde de la carta */
+    .mascot-wrap {
+      position: relative;
+      width: var(--mascot-w);
+      margin: 0 auto calc(var(--overlap) * -1);
       z-index: 10;
       pointer-events: none;
     }
 
-    .mascot-holder img {
+    .mascot-wrap img {
       width: 100%;
       display: block;
       mix-blend-mode: multiply;
     }
 
-    /* Hoja de la carta, con espacio generoso */
+    /* Hoja de la carta */
     .letter-card {
       background: var(--card-bg);
       width: 100%;
-      padding: 85px 44px 40px; /* Más espacio arriba para que el perrito no tape el texto principal */
+      padding: calc(var(--overlap) + 26px) 44px 40px;
       border-radius: 12px;
       box-shadow: var(--shadow);
       border: 1px solid rgba(214, 104, 116, 0.12);
-      margin-top: 140px; /* Espacio para que el perrito se luzca sin superponerse */
       position: relative;
     }
 
-    /* Burbuja de texto interactiva de la mascota */
+    /* Burbuja de texto de la mascota */
     .pet-tooltip {
       position: absolute;
-      top: -45px;
-      right: 12%;
+      top: -14px;
+      right: -28%;
       background: var(--text-primary);
       color: #FFFFFF;
       font-family: 'JetBrains Mono', monospace;
       font-size: 11.5px;
       padding: 7px 14px;
       border-radius: 6px;
-      opacity: 1;
-      transform: translateY(0);
       white-space: nowrap;
       box-shadow: 0 4px 12px rgba(58, 37, 41, 0.15);
-      z-index: 15;
       animation: floatBadge 3.2s ease-in-out infinite alternate;
     }
 
@@ -233,7 +230,7 @@
       content: '';
       position: absolute;
       bottom: -5px;
-      right: 32px;
+      left: 24px;
       border-width: 5px 5px 0;
       border-style: solid;
       border-color: var(--text-primary) transparent transparent;
@@ -300,7 +297,6 @@
       line-height: 1.5;
     }
 
-    /* Botón de acción final sutil */
     .action-area {
       margin-top: 32px;
       display: flex;
@@ -325,14 +321,17 @@
       border-color: var(--accent);
     }
 
-    /* --- RESPONSIVIDAD PARA DISPOSITIVOS MÓVILES (Celulares / Tablets) --- */
+    /* --- MÓVILES --- */
     @media (max-width: 480px) {
       body {
-        padding: 50px 15px 24px;
+        padding: 24px 15px;
+      }
+      .letter-stage {
+        --mascot-w: 150px;
+        --overlap: 26px;
       }
       .letter-card {
-        padding: 54px 22px 32px; /* Reducimos el padding superior y lateral en móviles */
-        margin-top: 85px; /* Menor margen para acomodar la miniatura en móvil */
+        padding: calc(var(--overlap) + 22px) 22px 32px;
       }
       h1 {
         font-size: 26px;
@@ -342,15 +341,10 @@
         line-height: 1.7;
         margin-bottom: 16px;
       }
-      .mascot-holder {
-        width: 145px; /* Ajuste proporcional de la mascota para celular */
-        top: -106px; /* Lo bajamos proporcionalmente */
-      }
       .pet-tooltip {
         font-size: 9.5px;
-        top: -30px;
-        right: 8%;
         padding: 5px 10px;
+        right: -22%;
       }
       .signature {
         margin-top: 24px;
@@ -365,7 +359,7 @@
       .btn-reply {
         font-size: 11px;
         padding: 9px 14px;
-        width: 100%; /* El botón se adapta a todo el ancho en móviles para mejorar la experiencia */
+        width: 100%;
         text-align: center;
       }
     }
@@ -386,23 +380,19 @@
 
     <!-- ESCENARIO DE LA CARTA CON MASCOTA -->
     <div class="letter-stage" id="letterStage">
-      
-      <!-- Ilustración de la Mascota de pie "sosteniendo" el borde -->
-      <div class="mascot-holder">
+
+      <div class="mascot-wrap">
+        <div class="pet-tooltip" id="petTooltip">¡Aprobado por Blacky! ♥</div>
         <img src="mascota.png" alt="Mascota sosteniendo la carta">
       </div>
 
-      <!-- Diálogo/Burbuja flotante de la mascota -->
-      <div class="pet-tooltip" id="petTooltip">¡Aprobado por [Nombre]! ♥</div>
-
-      <!-- CARTA DESPLEGADA -->
       <article class="letter-card">
         <div class="meta-header">
           <span class="status-dot"></span>
           <span>v1.0.0 — Solo para tus ojos</span>
         </div>
 
-        <h1>Hola, [Su Nombre]</h1>
+        <h1>Para Nataly</h1>
 
         <div class="letter-body">
           <p>
@@ -412,12 +402,12 @@
             Admiro muchísimo la forma en la que ves el mundo y esa calidez tuya que hace que cualquier día normal se sienta especial.
           </p>
           <p>
-            No hace falta complicar las cosas: simplemente me encanta pasar tiempo contigo, escucharte y seguir conociendote.
+            No hace falta complicar las cosas: simplemente me encanta pasar tiempo contigo, escucharte y seguir conociéndote.
           </p>
         </div>
 
         <div class="signature">
-          <div class="signature-name">Con cariño, [Tu Nombre]</div>
+          <div class="signature-name">Con cariño, Alexis</div>
           <p class="postscript">
             Pd: Blacky me autorizó enviarte esto (y dice que deberíamos salir pronto).
           </p>
@@ -452,12 +442,11 @@
         envelopeContainer.classList.add('fade-out');
       }, 450);
 
-      // 3. Oculta el sobre del flujo y centra la carta desplegada con la mascota
+      // 3. Oculta el sobre y muestra la carta con la mascota
       setTimeout(() => {
         envelopeContainer.classList.add('hidden');
         letterStage.classList.add('block');
-        
-        // Fuerza el reflow para que la transición de opacidad se ejecute suavemente
+
         requestAnimationFrame(() => {
           letterStage.classList.add('visible');
         });
@@ -467,13 +456,12 @@
     function acceptInvite() {
       const btn = document.getElementById('replyBtn');
       const tooltip = document.getElementById('petTooltip');
-      
+
       btn.textContent = "♥ Merged! Nos vemos pronto";
       btn.style.background = "#D66874";
       btn.style.borderColor = "#D66874";
       btn.style.color = "#FFFFFF";
-      
-      // Cambio interactivo y alegre en la burbuja de la mascota
+
       tooltip.textContent = "¡SIII! (Mueve la colita) 🐾";
     }
   </script>
