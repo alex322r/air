@@ -15,7 +15,7 @@
       --envelope-flap: #EED4D9;     /* Rosa empolvado para la solapa */
       --envelope-front: #F9ECEE;    /* Rosa claro frontal */
       --envelope-bottom: #F2DCE0;   /* Pliegue inferior del sobre */
-      --card-bg: #FFFFFF;           /* Blanco puro para legibilidad */
+      --card-bg: #FFFFFF;           /* Blanco puro */
       --text-primary: #3A2529;      /* Borgoña muy oscuro */
       --text-secondary: #8C6D73;    /* Malva grisáceo suave */
       --accent: #D66874;            /* Rojo pastel / Coral rosado */
@@ -42,14 +42,14 @@
       align-items: center;
       justify-content: center;
       overflow-x: hidden;
-      padding: 40px 20px;
+      padding: 20px;
     }
 
     /* --- CONTENEDOR CENTRAL --- */
     .stage {
       position: relative;
       width: 100%;
-      max-width: 480px;
+      max-width: 520px; /* Aumentamos ligeramente para lucir más en escritorio */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -181,58 +181,59 @@
       transform: translateY(0);
     }
 
-    /* Ilustración de la Mascota */
+    /* Ilustración de la Mascota - OPTIMIZADA PARA ESCRITORIO */
     .mascot-holder {
       position: absolute;
-      top: -128px; /* Hace que asome por encima de la carta */
+      top: -160px; /* Sube la imagen de forma que las patitas toquen la carta en escritorios */
       left: 50%;
       transform: translateX(-50%);
-      width: 180px; /* Tamaño ideal de la caricatura */
-      z-index: 5;
-      pointer-events: none; /* No interfiere con clicks de usuario */
+      width: 215px; /* Gran presencia en pantallas normales/escritorio */
+      z-index: 10;
+      pointer-events: none;
     }
 
     .mascot-holder img {
       width: 100%;
       display: block;
+      mix-blend-mode: multiply;
     }
 
-    /* Hoja de la carta, estilizada para encajar abajo */
+    /* Hoja de la carta, con espacio generoso */
     .letter-card {
       background: var(--card-bg);
       width: 100%;
-      padding: 68px 36px 40px; /* Más padding arriba para no chocar con las patitas */
+      padding: 85px 44px 40px; /* Más espacio arriba para que el perrito no tape el texto principal */
       border-radius: 12px;
       box-shadow: var(--shadow);
       border: 1px solid rgba(214, 104, 116, 0.12);
-      margin-top: 80px; /* Deja espacio para que el perrito sea visible arriba */
+      margin-top: 140px; /* Espacio para que el perrito se luzca sin superponerse */
       position: relative;
     }
 
-    /* Tooltip interactivo flotante */
+    /* Burbuja de texto interactiva de la mascota */
     .pet-tooltip {
       position: absolute;
-      top: -30px;
-      right: 15%;
+      top: -45px;
+      right: 12%;
       background: var(--text-primary);
       color: #FFFFFF;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      padding: 6px 12px;
+      font-size: 11.5px;
+      padding: 7px 14px;
       border-radius: 6px;
       opacity: 1;
       transform: translateY(0);
       white-space: nowrap;
       box-shadow: 0 4px 12px rgba(58, 37, 41, 0.15);
-      z-index: 10;
-      animation: floatBadge 3s ease-in-out infinite alternate;
+      z-index: 15;
+      animation: floatBadge 3.2s ease-in-out infinite alternate;
     }
 
     .pet-tooltip::after {
       content: '';
       position: absolute;
       bottom: -5px;
-      right: 30px;
+      right: 32px;
       border-width: 5px 5px 0;
       border-style: solid;
       border-color: var(--text-primary) transparent transparent;
@@ -246,17 +247,17 @@
     /* Contenido de la carta */
     .meta-header {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
+      font-size: 11.5px;
       color: var(--text-secondary);
-      margin-bottom: 18px;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
     .status-dot {
-      width: 6px;
-      height: 6px;
+      width: 6.5px;
+      height: 6.5px;
       background-color: var(--accent);
       border-radius: 50%;
       display: inline-block;
@@ -264,44 +265,44 @@
 
     h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 32px;
+      font-size: 34px;
       font-weight: 600;
-      line-height: 1.2;
+      line-height: 1.25;
       margin-bottom: 24px;
       color: var(--text-primary);
     }
 
     .letter-body p {
       font-size: 15px;
-      line-height: 1.75;
+      line-height: 1.8;
       color: #4D3539;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
       font-weight: 300;
     }
 
     .signature {
-      margin-top: 32px;
-      padding-top: 20px;
+      margin-top: 36px;
+      padding-top: 24px;
       border-top: 1px solid #F7E8EB;
     }
 
     .signature-name {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 22px;
+      font-size: 24px;
       color: var(--text-primary);
     }
 
     .postscript {
-      margin-top: 10px;
-      font-size: 12.5px;
+      margin-top: 12px;
+      font-size: 13px;
       color: var(--text-secondary);
       line-height: 1.5;
     }
 
     /* Botón de acción final sutil */
     .action-area {
-      margin-top: 28px;
+      margin-top: 32px;
       display: flex;
       justify-content: flex-end;
     }
@@ -311,8 +312,8 @@
       border: 1px solid #EBC4CB;
       color: var(--accent-hover);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
-      padding: 10px 16px;
+      font-size: 12px;
+      padding: 11px 18px;
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.25s ease;
@@ -324,25 +325,48 @@
       border-color: var(--accent);
     }
 
+    /* --- RESPONSIVIDAD PARA DISPOSITIVOS MÓVILES (Celulares / Tablets) --- */
     @media (max-width: 480px) {
       body {
-        padding: 50px 18px 24px;
+        padding: 50px 15px 24px;
       }
       .letter-card {
-        padding: 60px 24px 32px;
-        margin-top: 60px;
+        padding: 54px 22px 32px; /* Reducimos el padding superior y lateral en móviles */
+        margin-top: 85px; /* Menor margen para acomodar la miniatura en móvil */
       }
       h1 {
-        font-size: 28px;
+        font-size: 26px;
+      }
+      .letter-body p {
+        font-size: 14px;
+        line-height: 1.7;
+        margin-bottom: 16px;
       }
       .mascot-holder {
-        width: 140px;
-        top: -95px;
+        width: 145px; /* Ajuste proporcional de la mascota para celular */
+        top: -106px; /* Lo bajamos proporcionalmente */
       }
       .pet-tooltip {
-        font-size: 10px;
-        top: -15px;
-        right: 10%;
+        font-size: 9.5px;
+        top: -30px;
+        right: 8%;
+        padding: 5px 10px;
+      }
+      .signature {
+        margin-top: 24px;
+        padding-top: 16px;
+      }
+      .signature-name {
+        font-size: 21px;
+      }
+      .postscript {
+        font-size: 11.5px;
+      }
+      .btn-reply {
+        font-size: 11px;
+        padding: 9px 14px;
+        width: 100%; /* El botón se adapta a todo el ancho en móviles para mejorar la experiencia */
+        text-align: center;
       }
     }
   </style>
@@ -365,7 +389,6 @@
       
       <!-- Ilustración de la Mascota de pie "sosteniendo" el borde -->
       <div class="mascot-holder">
-        <!-- Reemplaza "mascota.png" con la caricatura que creamos -->
         <img src="mascota.png" alt="Mascota sosteniendo la carta">
       </div>
 
@@ -379,24 +402,24 @@
           <span>v1.0.0 — Solo para tus ojos</span>
         </div>
 
-        <h1>Para, Nataly</h1>
+        <h1>Hola, [Su Nombre]</h1>
 
         <div class="letter-body">
           <p>
             Quería escribirte algo distinto, un pequeño espacio en internet que existiera únicamente para ti, sin ruido ni distracciones.
           </p>
           <p>
-            Admiro muchísimo la forma en la que ves el mundo, esa calidez tuya que hace que cualquier día normal se sienta especial.
+            Admiro muchísimo la forma en la que ves el mundo, tu mente brillante para resolver problemas y esa calidez tuya que hace que cualquier día normal se sienta especial. Desde que coincidimos, todo parece funcionar con mucha más armonía.
           </p>
           <p>
-            No hace falta complicar las cosas: simplemente me encanta pasar tiempo contigo, escucharte y seguir conociendote.
+            No hace falta complicar las cosas: simplemente me encanta pasar tiempo contigo, escucharte y seguir descubriendo todo lo que podemos construir juntos.
           </p>
         </div>
 
         <div class="signature">
-          <div class="signature-name">Con cariño, Alexis</div>
+          <div class="signature-name">Con cariño, [Tu Nombre]</div>
           <p class="postscript">
-            Pd: Blacky me autorizó enviarte esto (y dice que deberíamos salir pronto).
+            Pd: [Nombre de la mascota] me autorizó enviarte esto (y dice que deberíamos salir pronto).
           </p>
         </div>
 
