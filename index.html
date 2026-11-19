@@ -39,11 +39,10 @@
       font-family: 'Inter', sans-serif;
       min-height: 100dvh;
       display: flex;
-      align-items: safe center;
+      align-items: center;
       justify-content: center;
       overflow-x: hidden;
-      padding: 24px 20px;
-      padding-top: env(safe-area-inset-top);
+      padding: 40px 20px;
     }
 
     /* --- CONTENEDOR CENTRAL --- */
@@ -163,97 +162,88 @@
       opacity: 0.75;
     }
 
-    /* --- HOJA DE LA CARTA --- */
-    .letter-card {
+    /* --- CONTENEDOR DE LA CARTA Y LA MASCOTA --- */
+    .letter-stage {
       display: none;
-      background: var(--card-bg);
       width: 100%;
-      padding: 48px 36px 40px;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
       position: relative;
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(30px);
       transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-      border: 1px solid rgba(214, 104, 116, 0.12);
-      margin: auto 0;
     }
 
-    .letter-card.block {
+    .letter-stage.block {
       display: block;
     }
 
-    .letter-card.visible {
+    .letter-stage.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* Foto de la mascota estilo Polaroid / Sticker en esquina */
-    .pet-badge {
+    /* Ilustración de la Mascota */
+    .mascot-holder {
       position: absolute;
-      top: -24px;
-      right: 28px;
-      width: 82px;
-      height: 82px;
-      background: #FFFFFF;
-      padding: 5px 5px 14px 5px;
-      border-radius: 6px;
-      box-shadow: 0 10px 25px rgba(180, 95, 110, 0.15);
-      border: 1px solid rgba(214, 104, 116, 0.12);
-      transform: rotate(6deg);
-      cursor: pointer;
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      z-index: 10;
+      top: -128px; /* Hace que asome por encima de la carta */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 180px; /* Tamaño ideal de la caricatura */
+      z-index: 5;
+      pointer-events: none; /* No interfiere con clicks de usuario */
     }
 
-    .pet-badge:hover {
-      transform: rotate(0deg) scale(1.08);
-    }
-
-    .pet-badge img {
+    .mascot-holder img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 3px;
       display: block;
     }
 
-    /* Tooltip interactivo al tocar a la mascota */
+    /* Hoja de la carta, estilizada para encajar abajo */
+    .letter-card {
+      background: var(--card-bg);
+      width: 100%;
+      padding: 68px 36px 40px; /* Más padding arriba para no chocar con las patitas */
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(214, 104, 116, 0.12);
+      margin-top: 80px; /* Deja espacio para que el perrito sea visible arriba */
+      position: relative;
+    }
+
+    /* Tooltip interactivo flotante */
     .pet-tooltip {
       position: absolute;
-      top: -62px;
-      right: 16px;
+      top: -30px;
+      right: 15%;
       background: var(--text-primary);
       color: #FFFFFF;
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
       padding: 6px 12px;
       border-radius: 6px;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: all 0.25s ease;
-      pointer-events: none;
+      opacity: 1;
+      transform: translateY(0);
       white-space: nowrap;
       box-shadow: 0 4px 12px rgba(58, 37, 41, 0.15);
-      z-index: 20;
+      z-index: 10;
+      animation: floatBadge 3s ease-in-out infinite alternate;
     }
 
     .pet-tooltip::after {
       content: '';
       position: absolute;
       bottom: -5px;
-      right: 36px;
+      right: 30px;
       border-width: 5px 5px 0;
       border-style: solid;
       border-color: var(--text-primary) transparent transparent;
     }
 
-    .pet-tooltip.show {
-      opacity: 1;
-      transform: translateY(0);
+    @keyframes floatBadge {
+      0% { transform: translateY(0px) rotate(2deg); }
+      100% { transform: translateY(-6px) rotate(-1deg); }
     }
 
-    /* Contenido textual de la carta */
+    /* Contenido de la carta */
     .meta-header {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
@@ -336,18 +326,23 @@
 
     @media (max-width: 480px) {
       body {
-        padding: 36px 18px 24px;
+        padding: 50px 18px 24px;
       }
       .letter-card {
-        padding: 44px 24px 32px;
+        padding: 60px 24px 32px;
+        margin-top: 60px;
       }
       h1 {
         font-size: 28px;
       }
-      .pet-badge {
-        width: 72px;
-        height: 72px;
-        right: 20px;
+      .mascot-holder {
+        width: 140px;
+        top: -95px;
+      }
+      .pet-tooltip {
+        font-size: 10px;
+        top: -15px;
+        right: 10%;
       }
     }
   </style>
@@ -365,60 +360,66 @@
       <p class="hint">Toca el sobre para desplegar</p>
     </div>
 
-    <!-- CARTA DESPLEGADA -->
-    <article class="letter-card" id="letter">
-      <!-- Tooltip secreto de la mascota -->
-      <div class="pet-tooltip" id="petTooltip">Aprobado por [Nombre de la mascota] ♥</div>
+    <!-- ESCENARIO DE LA CARTA CON MASCOTA -->
+    <div class="letter-stage" id="letterStage">
       
-      <!-- Foto de la mascota -->
-      <div class="pet-badge" onclick="togglePetNote()" title="Tócame">
-        <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=300&q=80" alt="Mascota">
+      <!-- Ilustración de la Mascota de pie "sosteniendo" el borde -->
+      <div class="mascot-holder">
+        <!-- Reemplaza "mascota.png" con la caricatura que creamos -->
+        <img src="mascota.png" alt="Mascota sosteniendo la carta">
       </div>
 
-      <div class="meta-header">
-        <span class="status-dot"></span>
-        <span>v1.0.0 — Solo para tus ojos</span>
-      </div>
+      <!-- Diálogo/Burbuja flotante de la mascota -->
+      <div class="pet-tooltip" id="petTooltip">¡Aprobado por [Nombre]! ♥</div>
 
-      <h1>Hola, [Su Nombre]</h1>
+      <!-- CARTA DESPLEGADA -->
+      <article class="letter-card">
+        <div class="meta-header">
+          <span class="status-dot"></span>
+          <span>v1.0.0 — Solo para tus ojos</span>
+        </div>
 
-      <div class="letter-body">
-        <p>
-          Quería escribirte algo distinto, un pequeño espacio en internet que existiera únicamente para ti, sin ruido ni distracciones.
-        </p>
-        <p>
-          Admiro muchísimo la forma en la que ves el mundo, tu mente brillante para resolver problemas y esa calidez tuya que hace que cualquier día normal se sienta especial. Desde que coincidimos, todo parece funcionar con mucha más armonía.
-        </p>
-        <p>
-          No hace falta complicar las cosas: simplemente me encanta pasar tiempo contigo, escucharte y seguir descubriendo todo lo que podemos construir juntos.
-        </p>
-      </div>
+        <h1>Hola, [Su Nombre]</h1>
 
-      <div class="signature">
-        <div class="signature-name">Con cariño, [Tu Nombre]</div>
-        <p class="postscript">
-          Pd: [Nombre de la mascota] me autorizó enviarte esto (y dice que deberíamos salir pronto).
-        </p>
-      </div>
+        <div class="letter-body">
+          <p>
+            Quería escribirte algo distinto, un pequeño espacio en internet que existiera únicamente para ti, sin ruido ni distracciones.
+          </p>
+          <p>
+            Admiro muchísimo la forma en la que ves el mundo, tu mente brillante para resolver problemas y esa calidez tuya que hace que cualquier día normal se sienta especial. Desde que coincidimos, todo parece funcionar con mucha más armonía.
+          </p>
+          <p>
+            No hace falta complicar las cosas: simplemente me encanta pasar tiempo contigo, escucharte y seguir descubriendo todo lo que podemos construir juntos.
+          </p>
+        </div>
 
-      <div class="action-area">
-        <button class="btn-reply" id="replyBtn" onclick="acceptInvite()">
-          git commit -m "Acepto la salida"
-        </button>
-      </div>
-    </article>
+        <div class="signature">
+          <div class="signature-name">Con cariño, [Tu Nombre]</div>
+          <p class="postscript">
+            Pd: [Nombre de la mascota] me autorizó enviarte esto (y dice que deberíamos salir pronto).
+          </p>
+        </div>
+
+        <div class="action-area">
+          <button class="btn-reply" id="replyBtn" onclick="acceptInvite()">
+            git commit -m "Acepto la salida"
+          </button>
+        </div>
+      </article>
+
+    </div>
   </div>
 
   <script>
     console.log(
-      "%c♥ Hola ingeniera. Si estás leyendo esto, ya te ganaste un café extra.",
+      "%c♥ Hola ingeniera. Si estás leyendo esto, ya te ganaste un café extra y muchas patitas de aprobación.",
       "color: #D66874; font-family: monospace; font-size: 13px; padding: 8px 0;"
     );
 
     function openLetter() {
       const envelope = document.getElementById('envelope');
       const envelopeContainer = document.getElementById('envelopeContainer');
-      const letter = document.getElementById('letter');
+      const letterStage = document.getElementById('letterStage');
 
       // 1. Abre la solapa
       envelope.classList.add('open');
@@ -428,37 +429,29 @@
         envelopeContainer.classList.add('fade-out');
       }, 450);
 
-      // 3. Oculta el sobre del flujo y centra la carta desplegada
+      // 3. Oculta el sobre del flujo y centra la carta desplegada con la mascota
       setTimeout(() => {
         envelopeContainer.classList.add('hidden');
-        letter.classList.add('block');
+        letterStage.classList.add('block');
         
         // Fuerza el reflow para que la transición de opacidad se ejecute suavemente
         requestAnimationFrame(() => {
-          letter.classList.add('visible');
+          letterStage.classList.add('visible');
         });
       }, 900);
     }
 
-    let tooltipTimeout;
-    function togglePetNote() {
-      const tooltip = document.getElementById('petTooltip');
-      tooltip.classList.add('show');
-      
-      clearTimeout(tooltipTimeout);
-      tooltipTimeout = setTimeout(() => {
-        tooltip.classList.remove('show');
-      }, 3000);
-    }
-
     function acceptInvite() {
       const btn = document.getElementById('replyBtn');
+      const tooltip = document.getElementById('petTooltip');
+      
       btn.textContent = "♥ Merged! Nos vemos pronto";
       btn.style.background = "#D66874";
       btn.style.borderColor = "#D66874";
       btn.style.color = "#FFFFFF";
       
-      togglePetNote();
+      // Cambio interactivo y alegre en la burbuja de la mascota
+      tooltip.textContent = "¡SIII! (Mueve la colita) 🐾";
     }
   </script>
 </body>
